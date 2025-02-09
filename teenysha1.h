@@ -41,6 +41,12 @@ void sha1_reset(SHA1 *sha1);
 void sha1_process_block(SHA1 *sha1, const void* const start, const void* const end);
 void sha1_process_byte(SHA1 *sha1, uint8_t octet);
 void sha1_process_bytes(SHA1 *sha1, const void* const data, size_t len);
+// WARNING! On little-endian machine (like x86_64) `sha1_get_digest` will return the digest uint32_t chunks
+// in a byte order suitable for human readable printing
+// ```c
+// printf("%08x%08x%08x%08x%08x\n", digest[0], digest[1], digest[2], digest[3], digest[4])
+// ```
+// If you need actual digest bytes in a correct order use `sha1_get_digest_bytes`.
 const uint32_t* sha1_get_digest(SHA1 *sha1, digest32_t digest);
 const uint8_t* sha1_get_digest_bytes(SHA1 *sha1, digest8_t digest);
 
@@ -170,6 +176,7 @@ const uint32_t* sha1_get_digest(SHA1 *sha1, digest32_t digest)
     return digest;
 }
 
+// TODO: make `sha1_get_digest_bytes` endianess independent
 const uint8_t* sha1_get_digest_bytes(SHA1 *sha1, digest8_t digest)
 {
     digest32_t d32;

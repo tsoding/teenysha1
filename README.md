@@ -16,9 +16,17 @@ int main(void)
     SHA1 s = {0};
     sha1_reset(&s);
     sha1_process_bytes(&s, message, strlen(message));
-    uint32_t digest[5];
-    sha1_get_digest(&s, digest);
-    printf("%08x%08x%08x%08x%08x\n", digest[0], digest[1], digest[2], digest[3], digest[4]);
+    digest8_t digest;
+    sha1_get_digest_bytes(&s, digest);
+    for (size_t i = 0; i < sizeof(digest); ++i) {
+        printf("%02x", digest[i]);
+    }
+    printf("\n");
     return 0;
 }
+```
+
+```console
+$ cc -o teenysha1test teenysha1test.c  && ./teenysha1test
+$ printf 'hello' | sha1sum -
 ```
