@@ -176,7 +176,6 @@ const uint32_t* sha1_get_digest(SHA1 *sha1, digest32_t digest)
     return digest;
 }
 
-// TODO: make `sha1_get_digest_bytes` endianess independent
 const uint8_t* sha1_get_digest_bytes(SHA1 *sha1, digest8_t digest)
 {
     digest32_t d32;
